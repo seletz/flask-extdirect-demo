@@ -13,6 +13,32 @@ Ext.define "NXDirect.view.Viewport",
   ,
     region: "center"
     xtype: "tabpanel"
-    items: [title: "Stefan"]
+    items: [
+        xtype: "grid"
+        title: "ExtDirect Demo"
+
+        store:
+            autoload: yes
+            proxy:
+                type: "direct"
+                api:
+                    create: "NXDB.db_create"
+                    read:   "NXDB.db_fetch"
+                    update: "NXDB.db_create"
+                    delete: "NXDB.db_delete"
+
+                paramOrder: "id"
+
+        columns: [
+            dataIndex: 'id'
+            text:      'ID'
+            width:     50
+        ,
+            dataIndex: 'name'
+            text:      'Name'
+            flex:      1
+        ]
+    ,
+    ]
   ]
 

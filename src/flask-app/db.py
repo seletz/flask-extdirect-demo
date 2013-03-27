@@ -47,12 +47,14 @@ def generate_fake_data(n=10):
 
 @blueprint.route("/data", methods=["GET"])
 @utils.returns_json
-def get_all():
+@blueprint.extdirect(klass="NXDB")
+def db_fetch_all():
     return data
 
 @blueprint.route("/data/<int:id>", methods=["GET"])
 @utils.returns_json
-def get_id(id):
+@blueprint.extdirect(klass="NXDB")
+def db_fetch(id):
     try:
         return data[id]
     except KeyError:
@@ -60,17 +62,20 @@ def get_id(id):
 
 @blueprint.route("/data", methods=["PUT"])
 @utils.returns_json
-def put():
+@blueprint.extdirect(klass="NXDB")
+def db_create():
     return create(flask.request.json)
 
 @blueprint.route("/data/<int:id>", methods=["POST"])
 @utils.returns_json
-def post(id):
+@blueprint.extdirect(klass="NXDB")
+def db_update(id):
     return update(id, flask.request.json)
 
 @blueprint.route("/data/<int:id>", methods=["DELETE"])
 @utils.returns_json
-def delete_id(id):
+@blueprint.extdirect(klass="NXDB")
+def db_delete(id):
     return delete(id)
 
 

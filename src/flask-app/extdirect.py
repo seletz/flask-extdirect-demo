@@ -139,14 +139,12 @@ class ExtDirectBlueprint(Blueprint):
             return responses
 
     def _request(self, req):
-        self.logger.debug("_request: req=%r", req)
         action, method, data, tid = (req['action'], req['method'],
                                      req['data'], req['tid'])
+        self.logger.debug("_request: %s.%s [%d] %r", action, method, tid, data)
 
         func = self.registry[action][method]
 
-
-        self.logger.debug("_request: func=%r", func)
 
         try:
             if isinstance(data, dict):
@@ -158,15 +156,17 @@ class ExtDirectBlueprint(Blueprint):
         except Exception, ex:
             self.logger.error("_request: exception: %r" % ex)
             traceback.print_exc(file=stderr)
-            return {'type': 'exception',
+            out = {'type': 'exception',
                     'tid': tid,
                     'message': unicode(ex),
                     'where': traceback.format_exc()}
-        else:
-            return {'type': 'rpc',
-                    'tid': tid,
-                    'action': action,
-                    'method': method,
-                    'result': result}
+        out = {'type': 'rpc',
+                'tid': tid,
+                'action': action,
+                'method': method,
+                'result': result}
+
+        self.logger.debug("_request: => %r", out)
+        return out
 
 # vim: set ft=python ts=4 sw=4 expandtab :
