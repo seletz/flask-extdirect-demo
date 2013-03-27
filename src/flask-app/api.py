@@ -7,9 +7,9 @@ logger = logging.getLogger("api")
 
 blueprint = extdirect.ExtDirectBlueprint("api", __name__, )
 
-# @blueprint.route("/version") ->
+@blueprint.route("/version")
+@utils.returns_json
 @blueprint.extdirect(klass="NXGateway")
-# @utils.returns_json
 def version():
     logger.debug("GET: version")
     return {
