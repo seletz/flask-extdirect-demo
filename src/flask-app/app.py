@@ -2,6 +2,10 @@ from flask import Flask
 app = Flask(__name__)
 
 
+from direct import direct
+
+app.register_blueprint(direct)
+
 if __name__ == "__main__":
     from werkzeug import SharedDataMiddleware
     import os
