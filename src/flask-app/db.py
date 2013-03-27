@@ -55,6 +55,10 @@ def db_fetch_all():
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
 def db_fetch(id):
+    if id is None:
+        # XXX: fuu ??
+        return {"items": data.values(),
+                "count": len(data.keys())}
     try:
         return data[id]
     except KeyError:

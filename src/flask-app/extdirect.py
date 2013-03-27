@@ -145,7 +145,6 @@ class ExtDirectBlueprint(Blueprint):
 
         func = self.registry[action][method]
 
-
         try:
             if isinstance(data, dict):
                 result = func(**data)
@@ -153,6 +152,11 @@ class ExtDirectBlueprint(Blueprint):
                 result = func(*data)
             else:
                 result = func()
+            out = {'type': 'rpc',
+                    'tid': tid,
+                    'action': action,
+                    'method': method,
+                    'result': result}
         except Exception, ex:
             self.logger.error("_request: exception: %r" % ex)
             traceback.print_exc(file=stderr)
@@ -160,11 +164,6 @@ class ExtDirectBlueprint(Blueprint):
                     'tid': tid,
                     'message': unicode(ex),
                     'where': traceback.format_exc()}
-        out = {'type': 'rpc',
-                'tid': tid,
-                'action': action,
-                'method': method,
-                'result': result}
 
         self.logger.debug("_request: => %r", out)
         return out

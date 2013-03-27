@@ -3,4 +3,5 @@ Ext.define "NXDirect.controller.Main",
 
   stores: ["Direct"]
   models: ["Demo"]
+  views:  ["Demo"]
 

@@ -6,10 +6,8 @@ Ext.require([
 
 Ext.application
   controllers: ["Main"]
-  views: ["Main"]
   name: "NXDirect"
   autoCreateViewport: true
-  #require: ["Ext.direct.*"]
   launch: ->
       console.log "NXDirect.launch()"
 
