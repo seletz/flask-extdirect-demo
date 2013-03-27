@@ -1,10 +1,13 @@
+import logging
 from flask import Flask
+
+from log import setup_logging
+setup_logging(logging.DEBUG)
+
+import api
+
 app = Flask(__name__)
-
-
-from direct import direct
-
-app.register_blueprint(direct)
+app.register_blueprint(api.blueprint, url_prefix="/api/1.0")
 
 if __name__ == "__main__":
     from werkzeug import SharedDataMiddleware
@@ -19,4 +22,3 @@ if __name__ == "__main__":
             threaded=True,
             use_reloader=True,
             reloader_interval=2)
-

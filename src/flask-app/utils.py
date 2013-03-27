@@ -16,3 +16,15 @@ def returns_json(f):
 
     return wrapper
 
+def returns_js(f):
+    """returns_js(function) -> function
+
+    Returns a response mime type `application/javascript`
+    """
+    @functools.wraps(f)
+    def wrapper(*args, **kw):
+        result = f(*args, **kw)
+        return flask.current_app.response_class(result,
+                mimetype="application/javascript")
+
+    return wrapper
