@@ -1,9 +1,7 @@
 {spawn, exec} = require 'child_process'
 util = require 'util'
 
-app_name = "know"
-wc_dir   = "/Volumes/D\$/ptc/Windchill/codebase/netmarkets/jsp/nexiles/#{app_name}"
-static_dir = "static"
+static_dir = "../../static"
 
 runCommand = (name, args...) ->
     proc =           spawn name, args
@@ -24,20 +22,9 @@ task 'init', 'initialize static dir with vendor data', (options) ->
   #runCommand 'rsync', '-av', 'vendor/extjs-4.1.1/resources', 'static'
   #runCommand 'rsync', '-av', 'vendor/extjs-4.1.1/examples/ux', 'static/js'
 
-task 'wcsync', 'initialize static dir with vendor data', (options) ->
-  util.log "syncing static dir to WC dir"
-  runCommand 'mkdir', '-p', wc_dir
-  runCommand 'rsync', '-av', static_dir, wc_dir
 
 task 'build', 'Watch source files and build JS & CSS', (options) ->
   invoke 'init'
   util.log "running build to static dir ..."
-  runCommand 'coffee', '--output', static_dir, '-wc', 'src/'
-
-task 'wcbuild', 'Watch source files and build JS to Windchill', (options) ->
-  invoke 'init'
-  invoke 'wcsync'
-  util.log "running build to WC dir ..."
-  runCommand 'coffee', '--output', "#{wc_dir}/", '-wc', 'src/'
-
+  runCommand 'coffee', '--output', static_dir, '-wc', '.'
 
