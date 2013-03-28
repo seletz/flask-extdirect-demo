@@ -16,8 +16,7 @@ Ext.define 'NXDirect.view.Demo',
         flex:      1
     ]
 
-    store:
-        model: "NXDirect.model.Demo"
+    store: "Direct"
 
 # vim: set ft=coffee ts=4 sw=4 expandtab :
 

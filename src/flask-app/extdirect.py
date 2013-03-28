@@ -25,7 +25,6 @@ except ImportError:
 
 
 class ExtDirectBlueprint(Blueprint):
-
     """ExtDirectBlueprint
 
     A blue print for ext direct.  Based on https://github.com/paparent/Flask-ExtDirect
@@ -141,7 +140,7 @@ class ExtDirectBlueprint(Blueprint):
     def _request(self, req):
         action, method, data, tid = (req['action'], req['method'],
                                      req['data'], req['tid'])
-        self.logger.debug("_request: %s.%s [%d] %r", action, method, tid, data)
+        self.logger.debug("_request: %s.%s [%d] data=%r", action, method, tid, data)
 
         func = self.registry[action][method]
 
