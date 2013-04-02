@@ -73,8 +73,15 @@ def db_create():
 @blueprint.route("/data/<int:id>", methods=["POST"])
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
-def db_update(id):
-    return update(id, flask.request.json)
+def db_update(items):
+    if isinstance(items, dict):
+        items = [items]
+
+    out = []
+    for item in items:
+        out.append(update(item["id"], item))
+
+    return out
 
 @blueprint.route("/data/<int:id>", methods=["DELETE"])
 @utils.returns_json
