@@ -7,7 +7,7 @@ Ext.define "NXDirect.store.Direct",
     api:
         create: "NXDB.db_create"
         read:   "NXDB.db_fetch"
-        update: "NXDB.db_create"
+        update: "NXDB.db_update"
         delete: "NXDB.db_delete"
     reader:
         type: "json"
