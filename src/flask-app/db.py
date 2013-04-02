@@ -37,6 +37,11 @@ def delete(id):
         raise KeyError(id)
     return data.pop(id)
 
+def fetch_all():
+    global data
+    return {"items": data.values(),
+            "count": len(data.keys())}
+
 def generate_fake_data(n=10):
     global data
     for k in range(n):
@@ -49,16 +54,14 @@ def generate_fake_data(n=10):
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
 def db_fetch_all():
-    return data
+    return fetch_all()
 
 @blueprint.route("/data/<int:id>", methods=["GET"])
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
 def db_fetch(id):
     if id is None:
-        # XXX: fuu ??
-        return {"items": data.values(),
-                "count": len(data.keys())}
+        return fetch_all()
     try:
         return data[id]
     except KeyError:
@@ -67,8 +70,9 @@ def db_fetch(id):
 @blueprint.route("/data", methods=["PUT"])
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
-def db_create():
-    return create(flask.request.json)
+def db_create(data):
+    out = create(data)
+    return out
 
 @blueprint.route("/data/<int:id>", methods=["POST"])
 @utils.returns_json
@@ -86,8 +90,15 @@ def db_update(items):
 @blueprint.route("/data/<int:id>", methods=["DELETE"])
 @utils.returns_json
 @blueprint.extdirect(klass="NXDB")
-def db_delete(id):
-    return delete(id)
+def db_delete(items):
+    if isinstance(items, dict):
+        items = [items]
+
+    out = []
+    for item in items:
+        out.append(delete(item["id"]))
+
+    return out
 
 
 # vim: set ft=python ts=4 sw=4 expandtab :

@@ -32,7 +32,40 @@ Ext.define 'NXDirect.view.Demo',
             clicksToMoveEditor: 1
             autoCancel: false
 
+        @tbar = [
+            text: "add"
+            iconCls: "icon-add"
+            itemId: "add"
+            handler: =>
+                console.log "add"
+                rowEditing.cancelEdit()
+                r = Ext.create "NXDirect.model.Demo",
+                    name: "New"
+                    number: 42
+
+                NXDB.db_create r.getData(), (data) =>
+                    r.setId(data.id)
+
+                    @store.insert 0, r
+                    rowEditing.startEdit r,0
+        ,
+            text: "remove"
+            iconCls: "icon-delete"
+            itemId: "remove"
+            handler: =>
+                console.log "remove"
+                sm = @getSelectionModel()
+                rowEditing.cancelEdit()
+                @store.remove sm.getSelection()
+                if store.getCount() > 0
+                    sm.select 0
+        ]
         @plugins = [rowEditing]
+
+        @getSelectionModel().on "selectionchange", (selModel, selections) =>
+            console.log "selectionchange", selModel, selections
+            @down("#remove").setDisabled selections.length == 0
+
 
         @callParent(arguments)
 
